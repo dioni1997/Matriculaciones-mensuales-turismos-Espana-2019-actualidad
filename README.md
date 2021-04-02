@@ -7,7 +7,7 @@
    A través de la sección de "Estadísticas", hemos podido observar los datos mensuales de matriculaciones de turismos, pudiendo hacerse una comparación entre los años 2019 y 2020    (también 2021, si consideramos los datos hasta febrero). Con la intención de poder generar un fichero para calcular las variaciones interanuales, así como la evolución mensual    durante cada año, hemos investigado la forma de extraer los datos mediante la librería BeautifulSoup.
    
 2. Definir un título para el dataset. Elegir un título que sea descriptivo.
-   Comparativa de matriculaciones mensuales de turismos desde el 2019 hasta la actualidad
+   Comparativa de matriculaciones mensuales de turismos en España desde el 2019 hasta la actualidad
   
 3. Descripción del dataset. Desarrollar una descripción breve del conjunto de datos que se ha extraído (es necesario que esta descripción tenga sentido con el título elegido).
    El dataset describe el número de matriculaciones mensuales durante los últimos ejercicios (2019, 2020, 2021 hasta febrero). En él, se puede observar que las matriculaciones,      por lo general, son mucho menores en el 2020, año que coincide con la situación de pandemia generada por el virus SARS-COVID19. Sin embargo, hay algunos meses (como por  
