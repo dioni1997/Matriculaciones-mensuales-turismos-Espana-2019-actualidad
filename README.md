@@ -28,10 +28,10 @@
    
 7. Inspiración. Explique por qué es interesante este conjunto de datos y qué preguntas se pretenden responder. Es necesario comparar con los análisis anteriores presentados
    en el ejercicio 6.
-   
-   CAMBIAR TÍTULO REPOSITORIO
    Como ya se ha comentado en el ejercicio anterior, este conjunto de datos puede resultar interesante para realizar cálculos con el número de matriculaciones mensuales en
    España. Si bien nuestra intención inicial es la de hacer una comparativa intermensual e interanual, el dataset también puede ser utilizado, por ejemplo, para hacer 
    predicciones.
    
    Las preguntas principales que pretendemos responder son: ¿Ha afectado el COVID-19 a las matriculaciones mensuales de coches? ¿Existen variaciones interanuales significativas?
+   
+   CAMBIAR TÍTULO REPOSITORIO
