@@ -33,5 +33,22 @@
    predicciones.
    
    Las preguntas principales que pretendemos responder son: ¿Ha afectado el COVID-19 a las matriculaciones mensuales de coches? ¿Existen variaciones interanuales significativas?
-   
    CAMBIAR TÍTULO REPOSITORIO
+
+8. Licencia. Seleccione una de estas licencias para su dataset y explique el motivo 
+   de su selección:
+   ○ Released Under CC0: Public Domain License
+   ○ Released Under CC BY-NC-SA 4.0 License
+   ○ Released Under CC BY-SA 4.0 License
+   ○ Database released under Open Database License, individual contents 
+     under Database Contents License
+   ○ Other (specified above)
+   ○ Unknown License
+   
+   Seleccionamos la licencia CC0: Public Domain License, ya que no somos propietarios de los datos extraídos (estos corresponden a la patronal Faconauto), y no tenemos por tanto    ningún interés en ser mencionados como tales. Tampoco podemos tener ninguna garantía de la veracidad de los datos, si bien estos han sido extraídos de una asociación oficial.
+
+9. Código. Adjuntar el código con el que se ha generado el dataset, preferiblemente 
+   en Python o, alternativamente, en R.
+
+10.Dataset. Publicación del dataset en formato CSV en Zenodo (obtención del DOI) 
+   con una breve descripción.
