@@ -167,3 +167,4 @@ pandaaa.to_csv("pandaaa.csv")
 # Quedan aún bastantes cosas, como quitar las comillas que quedan, poner el formato más bonito,
 # o limpiar un poco el código. Diego también nos comentó que miráramos buenas prácticas.
 
+# Ver si podemos añadir nuevas columnas de pandas con las variaciones!
