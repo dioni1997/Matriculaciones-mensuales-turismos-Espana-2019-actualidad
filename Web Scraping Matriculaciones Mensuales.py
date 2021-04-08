@@ -9,7 +9,7 @@
 # Este será el enlace que usaremos para el web scraping.
 
 # Pregunta para el profesor: 
-# ¿Es necesario emplear Selenium para obtener el documento iframe directamente?
+#  Tendremos que usar Selenium si está la posibilidad.
 # Ya que estamos teniendo muchos problemas, por ejemplo con BeautifulSoup no mostrando el "src"
 # (no se muestran todos los elementos del tag correspondiente), o con el ejecutable "Geckodriver".
 
