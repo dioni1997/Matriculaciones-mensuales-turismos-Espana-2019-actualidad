@@ -12,6 +12,10 @@
 #  Tendremos que usar Selenium si está la posibilidad.
 # Ya que estamos teniendo muchos problemas, por ejemplo con BeautifulSoup no mostrando el "src"
 # (no se muestran todos los elementos del tag correspondiente), o con el ejecutable "Geckodriver".
+# probar si podemos crear un driver.get que navegue por el enlace de la URL.
+# import unittest
+# from selenium import webdriver
+# from selenium.webdriver.common.keys import Keys
 
 # Cargamos librerías necesarias
 import requests
