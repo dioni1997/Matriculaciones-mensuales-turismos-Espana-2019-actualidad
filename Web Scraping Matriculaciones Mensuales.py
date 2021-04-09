@@ -3,51 +3,55 @@
 
 # In[2]:
 
-
 # Inspeccionamos la página, y comprobamos que los datos se encuentran en un iframe.
-# A través del parámetro "src", podemos acceder al enlace en el que se encuentran estos datos.
-# Este será el enlace que usaremos para el web scraping.
+# A través de la librería Selenium, podemos acceder a dicho iframe desde la URL original.
 
-# Pregunta para el profesor: 
-#  Tendremos que usar Selenium si está la posibilidad.
-# Ya que estamos teniendo muchos problemas, por ejemplo con BeautifulSoup no mostrando el "src"
-# (no se muestran todos los elementos del tag correspondiente), o con el ejecutable "Geckodriver".
-# probar si podemos crear un driver.get que navegue por el enlace de la URL.
-# import unittest
-# from selenium import webdriver
-# from selenium.webdriver.common.keys import Keys
-
-# Cargamos librerías necesarias
-import requests
+# Cargamos librerías necesarias.
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
+# Almacenamos la URL original.
 url = "https://www.faconauto.com/matriculaciones-mensuales-turismos/"
-# Hemos tenido que descargar el archivo Geckodriver e incluirlo en el PATH, link utilizado: https://github.com/mozilla/geckodriver/releases
+
+# Abrimos un webdriver en el navegador Firefox.
+# NOTA: Es necesario descargar el ejecutable Geckodriver, a través de: https://github.com/mozilla/geckodriver/releases,
+# e incluirlo en el PATH, 
 driver1 = webdriver.Firefox()
 
+# Obtenemos la URL a través del driver.
 driver1.get(url)
 
+# Encontramos el iframe, clickamos sobre él, y nos cambiamos al directorio correspondiente.
 iframeElement = driver1.find_element_by_tag_name("iframe")
 iframeElement.click()
 driver1.switch_to.frame(iframeElement)
 
-soup = BeautifulSoup(driver1.page_source, "html.parse")
-print(soup)
+# Creamos un objeto soup a través del driver, una vez nos hemos cambiado de directorio.
+soup = BeautifulSoup(driver1.page_source, "html.parser")
 
-# Prueba de respuesta HTTP
-# page = requests.get("https://e.infogram.com/580ba5d8-99b4-4262-86ae-e335e3a02a5b?parent_url=https%3A%2F%2Fwww.faconauto.com%2Fmatriculaciones-mensuales-turismos%2F&amp;src=embed#async_embed")
-# print("Código de respuesta HTTP:", page)
+# Imprimimos soup.prettify para estudiar la estructura de la URL
+print(soup.prettify)
+
+'''
+# En este bloque, se ofrece un modo alternativo de obtener el objeto soup, parseando directamente la URL del iframe (src).
+# Cabe destacar que este método es menos flexible ante posibles cambios en el parámetro src.
+
+import requests
+
+# A través del parámetro "src", podemos acceder al enlace en el que se encuentran estos datos.
+# Este será el enlace que usaremos para el web scraping.
+page = requests.get("https://e.infogram.com/580ba5d8-99b4-4262-86ae-e335e3a02a5b?parent_url=https%3A%2F%2Fwww.faconauto.com%2Fmatriculaciones-mensuales-turismos%2F&amp;src=embed#async_embed")
+print("Código de respuesta HTTP:", page)
 
 # Almacenamos el objeto BeautifulSoup
-# soup = BeautifulSoup(page.content, "html.parser")
+soup = BeautifulSoup(page.content, "html.parser")
 
 # Imprimimos soup.prettify para estudiar la estructura de la URL
 # print(soup.prettify)
 
+'''
 
 # In[3]:
-
 
 # Los números deseados se encuentran almacenados en un tag <script>
 # Procedemos a guardar todos estos tags en una nueva variable
@@ -59,19 +63,13 @@ print(scripts_tags)
 
 # In[4]:
 
-
-# Como los números se encuentran en el cuarto tag <script>, lo almacenamos en una nueva variable,
-# indexando el cuarto valor de scripts_tags.
-data_script = scripts_tags[4]
+# Como los números se encuentran en el quinto tag <script>, lo almacenamos en una nueva variable,
+# indexando el quinto valor de scripts_tags.
+data_script = scripts_tags[5]
 print(data_script)
 
 
 # In[5]:
-
-
-# Próximos pasos - almacenar los datos en un CSV para trabajar con ellos.
-# Posible idea: separar campos por comas, filtrar por listas que incluyan
-# los meses del año (ENERO, FEBRERO, MARZO...)
 
 import re
 import csv
@@ -80,7 +78,6 @@ data_script = str(data_script)
 
 
 # In[6]:
-
 
 for match in re.finditer("ENERO", data_script):
     print (match.start(), match.end())
@@ -108,26 +105,10 @@ data_to_format = data_script[22281:22689]
 print(data_to_format)
 data_to_format = data_to_format.replace("[", "")
 data_to_format = data_to_format.replace("]", "")
+data_to_format = data_to_format.replace('"', "")
 print(data_to_format)
 
 data_to_format = data_to_format.split(",")
-print(data_to_format)
-
-lists = []
-lists.append(data_to_format[0:4])
-lists.append(data_to_format[4:8])
-lists.append(data_to_format[8:12])
-lists.append(data_to_format[12:16])
-lists.append(data_to_format[16:20])
-lists.append(data_to_format[20:24])
-lists.append(data_to_format[24:28])
-lists.append(data_to_format[28:32])
-lists.append(data_to_format[32:36])
-lists.append(data_to_format[36:40])
-lists.append(data_to_format[40:44])
-lists.append(data_to_format[44:48])
-
-print(lists)
 
 dictio = {}
 dictio[data_to_format[0]] = data_to_format[1], data_to_format[2], data_to_format[3]
@@ -148,39 +129,21 @@ print(dictio)
 
 # In[16]:
 
-
-with open("matr_turismos.csv", "w") as csvfile: 
-    wr = csv.writer(csvfile, quoting=csv.QUOTE_ALL, delimiter = ",")
-    wr.writerow(lists)
-    
-# Problema: el formato me queda todo en la misma línea
-
-'''
-print(wr)
-with open("prueba_dictio", "w") as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames = dictio.keys())
-        writer.writeheader()
-        for k in dictio:
-            writer.writerow(k)
-'''   
-
-# No terminado.
-# Al parecer, estoy teniendo problemas porque hay que pasar primero el dict a pandas.
-# https://www.reddit.com/r/learnpython/comments/avj6d2/ive_looked_on_stack_overflow_and_a_bunch_of_other/
-# https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.from_dict.html
-
-# Quizás una vez lo pase a pandas, ya vaya
-
+# Cargamos librerías necesarias.
 import pandas as pd
 
-pandaaa = pd.DataFrame.from_dict(dictio)
-print(pandaaa)
+# Creamos un dataframe con los datos del diccionario.
+matr_turismos = pd.DataFrame.from_dict(dictio)
 
+# Hacemos las modificaciones necesarias para dar forma a los datos.
+matr_turismos = matr_turismos.T
+matr_turismos[0] = pd.to_numeric(matr_turismos[0])
+matr_turismos[1] = pd.to_numeric(matr_turismos[1])
+matr_turismos[2] = pd.to_numeric(matr_turismos[2])
+matr_turismos.columns = [2021, 2020, 2019]
 
-# In[18]:
-
-
-pandaaa.to_csv("pandaaa.csv")
+# Almacenamos el resultado en un nuevo archivo CSV.
+matr_turismos.to_csv("matr_turismos.csv")
 
 # Quedan aún bastantes cosas, como quitar las comillas que quedan, poner el formato más bonito,
 # o limpiar un poco el código. Diego también nos comentó que miráramos buenas prácticas.
