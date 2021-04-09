@@ -20,16 +20,30 @@
 # Cargamos librerías necesarias
 import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
+
+url = "https://www.faconauto.com/matriculaciones-mensuales-turismos/"
+# Hemos tenido que descargar el archivo Geckodriver e incluirlo en el PATH, link utilizado: https://github.com/mozilla/geckodriver/releases
+driver1 = webdriver.Firefox()
+
+driver1.get(url)
+
+iframeElement = driver1.find_element_by_tag_name("iframe")
+iframeElement.click()
+driver1.switch_to.frame(iframeElement)
+
+soup = BeautifulSoup(driver1.page_source, "html.parse")
+print(soup)
 
 # Prueba de respuesta HTTP
-page = requests.get("https://e.infogram.com/580ba5d8-99b4-4262-86ae-e335e3a02a5b?parent_url=https%3A%2F%2Fwww.faconauto.com%2Fmatriculaciones-mensuales-turismos%2F&amp;src=embed#async_embed")
-print("Código de respuesta HTTP:", page)
+# page = requests.get("https://e.infogram.com/580ba5d8-99b4-4262-86ae-e335e3a02a5b?parent_url=https%3A%2F%2Fwww.faconauto.com%2Fmatriculaciones-mensuales-turismos%2F&amp;src=embed#async_embed")
+# print("Código de respuesta HTTP:", page)
 
 # Almacenamos el objeto BeautifulSoup
-soup = BeautifulSoup(page.content, "html.parser")
+# soup = BeautifulSoup(page.content, "html.parser")
 
 # Imprimimos soup.prettify para estudiar la estructura de la URL
-print(soup.prettify)
+# print(soup.prettify)
 
 
 # In[3]:
