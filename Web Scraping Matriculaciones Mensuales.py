@@ -68,6 +68,11 @@ print(scripts_tags)
 data_script = scripts_tags[5]
 print(data_script)
 
+'''
+# En caso de seleccionar la opción sin Selenium, será necesario acceder al 4o tag script.
+data_script = scripts_tags[4]
+print(data_script)
+'''
 
 # In[5]:
 
