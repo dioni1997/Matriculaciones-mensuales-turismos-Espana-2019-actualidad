@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
-
 # Inspeccionamos la página, y comprobamos que los datos se encuentran en un iframe.
 # A través de la librería Selenium, podemos acceder a dicho iframe desde la URL original.
 
@@ -50,10 +48,7 @@ soup = BeautifulSoup(page.content, "html.parser")
 # Imprimimos soup.prettify para estudiar la estructura de la URL
 print("Estructura HTML del infograma:", "\n")
 print(soup.prettify, "\n")
-
 '''
-
-# In[3]:
 
 # Los números deseados se encuentran almacenados en un tag <script>.
 # Procedemos a guardar todos estos tags en una nueva variable.
@@ -62,8 +57,6 @@ scripts_tags = soup.find_all("script")
 # Imprimimos la nueva variable para comprobar donde están los datos deseados.
 print("Los tags <script> en la página, son los siguientes:", "\n")
 print(scripts_tags)
-
-# In[4]:
 
 # Como los números se encuentran en el quinto tag <script>, lo almacenamos en una nueva variable,
 # indexando el quinto valor de scripts_tags.
@@ -78,15 +71,11 @@ print("El script de destino es el siguiente", "\n")
 print(data_script)
 '''
 
-# In[5]:
-
 # Importamos la libreria re para poder encontrar la ubicación de los datos.
 import re
 
 # Transformamos el script almacenado al tipo de variable string.
 data_script = str(data_script)
-
-# In[6]:
 
 # Inspeccionando el script, vemos que la segunda aparición de "ENERO" da inicio a nuestros datos.
 # A través de re.finditer, estudiamos
@@ -120,9 +109,6 @@ print(data_script[22653:22689], "\n")
 # Por tanto, ya tenemos ambos extremos de la lista a extraer del script.
 data_to_format = data_script[22281:22689]
 
-
-# In[7]:
-
 # Hagamos algunas modificaciones a los valores que queremos eliminar, con el objetivo
 # de únicamente extraer los valores númericos.
 data_to_format = data_to_format.replace("[", "")
@@ -151,8 +137,6 @@ dictio[data_to_format[44]] = data_to_format[45], data_to_format[46], data_to_for
 print("El diccionario final de valores luce así:", "\n")
 print(dictio, "\n")
 
-# In[16]:
-
 # Cargamos la librería pandas, para poder dar al dataset el estilo deseado.
 import pandas as pd
 
@@ -168,24 +152,22 @@ matr_turismos.columns = ["2021", "2020", "2019"]  # Damos nombre a las columnas.
 
 # Añadimos columnas con variaciones interanuales por mes.
 matr_turismos["Variación 2019-2020"] = (matr_turismos["2020"] - matr_turismos["2019"])/matr_turismos["2019"]
-matr_turismos["Variación 2020-2021"] = (matr_turismos["2021"] - matr_turismos["2020"])/matr_turismos["2020"]
+matr_turismos["Variación 2019-2021"] = (matr_turismos["2021"] - matr_turismos["2019"])/matr_turismos["2019"]
 
 # Adjuntamos columnas con las evoluciones mensuales de las matriculaciones durante el año.
 matr_turismos["Evolución 2019"] = ((matr_turismos["2019"] - matr_turismos["2019"].shift(+1)))/matr_turismos["2019"].shift(+1)
 matr_turismos["Evolución 2020"] = ((matr_turismos["2020"] - matr_turismos["2020"].shift(+1)))/matr_turismos["2020"].shift(+1)
-matr_turismos["Evolución 2021"] = ((matr_turismos["2021"] - matr_turismos["2020"].shift(+1)))/matr_turismos["2021"].shift(+1)
+matr_turismos["Evolución 2021"] = ((matr_turismos["2021"] - matr_turismos["2021"].shift(+1)))/matr_turismos["2021"].shift(+1)
 
 # Añadimos columnas con las diferencias en evoluciones intermensuales entre los distintos años.
 matr_turismos["Difs evolución 19-20"] = (matr_turismos["Evolución 2020"] - matr_turismos["Evolución 2019"])
-matr_turismos["Difs evolución 20-21"] = (matr_turismos["Evolución 2021"] - matr_turismos["Evolución 2020"])
+matr_turismos["Difs evolución 19-21"] = (matr_turismos["Evolución 2021"] - matr_turismos["Evolución 2019"])
 
 print("El dataset final es el siguiente:", "\n")
 print(matr_turismos)
 
 # Almacenamos el resultado en un nuevo archivo CSV.
 matr_turismos.to_csv("matr_turismos.csv")
-
-# In[17]:
 
 # EXTRA: En las siguientes líneas de código, generamos los gráficos de análisis que serán empleados en el PDF adjunto.
 
@@ -194,12 +176,5 @@ import matplotlib.pyplot as plt
 
 # Generamos el gráfico.
 plt.rcParams["figure.figsize"] = (10,5)
-matr_turismos.plot(y=["Variación 2019-2020", "Difs evolución 19-20", "Variación 2020-2021", "Difs evolución 20-21"], kind="line",
+matr_turismos.plot(y=["Variación 2019-2020", "Difs evolución 19-20"], kind="line",
                    title = "Variaciones interanuales por mes y diferencias de evolución intermensual (%)")
-
-
-
-# Quedan aún bastantes cosas, como quitar las comillas que quedan, poner el formato más bonito,
-# o limpiar un poco el código. Diego también nos comentó que miráramos buenas prácticas.
-
-# Ver si podemos añadir nuevas columnas de pandas con las variaciones!
