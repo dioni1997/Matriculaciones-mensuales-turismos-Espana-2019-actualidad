@@ -9,7 +9,6 @@
 # Cargamos librerías necesarias.
 from bs4 import BeautifulSoup
 from selenium import webdriver
-import requests
 
 # Almacenamos la URL original.
 url = "https://www.faconauto.com/matriculaciones-mensuales-turismos/"
@@ -17,18 +16,18 @@ url = "https://www.faconauto.com/matriculaciones-mensuales-turismos/"
 # Abrimos un webdriver en el navegador Firefox.
 # NOTA: Es necesario descargar el ejecutable Geckodriver, a través de: https://github.com/mozilla/geckodriver/releases,
 # e incluirlo en el PATH, 
-#driver1 = webdriver.Firefox()
+driver1 = webdriver.Firefox()
 
 # Obtenemos la URL a través del driver.
-#driver1.get(url)
+driver1.get(url)
 
 # Encontramos el iframe, clickamos sobre él, y nos cambiamos al directorio correspondiente.
-#iframeElement = driver1.find_element_by_tag_name("iframe")
-#iframeElement.click()
-#driver1.switch_to.frame(iframeElement)
+iframeElement = driver1.find_element_by_tag_name("iframe")
+iframeElement.click()
+driver1.switch_to.frame(iframeElement)
 
 # Creamos un objeto soup a través del driver, una vez nos hemos cambiado de directorio.
-soup = BeautifulSoup(driver.page_source, "html.parser")
+soup = BeautifulSoup(driver1.page_source, "html.parser")
 
 # Imprimimos soup.prettify para estudiar la estructura de la URL
 print(soup.prettify)
@@ -54,6 +53,7 @@ soup = BeautifulSoup(page.content, "html.parser")
 
 # In[3]:
 
+
 # Los números deseados se encuentran almacenados en un tag <script>
 # Procedemos a guardar todos estos tags en una nueva variable
 scripts_tags = soup.find_all("script")
@@ -64,9 +64,10 @@ print(scripts_tags)
 
 # In[4]:
 
-# Como los números se encuentran en el cuarto tag <script>, lo almacenamos en una nueva variable,
+
+# Como los números se encuentran en el quinto tag <script>, lo almacenamos en una nueva variable,
 # indexando el cuarto valor de scripts_tags.
-data_script = scripts_tags[4]
+data_script = scripts_tags[5]
 print(data_script)
 
 '''
