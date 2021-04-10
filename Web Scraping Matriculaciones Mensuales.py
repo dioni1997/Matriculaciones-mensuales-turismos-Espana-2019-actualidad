@@ -66,7 +66,7 @@ print(scripts_tags)
 
 
 # Como los números se encuentran en el quinto tag <script>, lo almacenamos en una nueva variable,
-# indexando el cuarto valor de scripts_tags.
+# indexando el quinto valor de scripts_tags.
 data_script = scripts_tags[5]
 print(data_script)
 
