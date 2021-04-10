@@ -9,6 +9,7 @@
 # Cargamos librerías necesarias.
 from bs4 import BeautifulSoup
 from selenium import webdriver
+import requests
 
 # Almacenamos la URL original.
 url = "https://www.faconauto.com/matriculaciones-mensuales-turismos/"
@@ -16,18 +17,18 @@ url = "https://www.faconauto.com/matriculaciones-mensuales-turismos/"
 # Abrimos un webdriver en el navegador Firefox.
 # NOTA: Es necesario descargar el ejecutable Geckodriver, a través de: https://github.com/mozilla/geckodriver/releases,
 # e incluirlo en el PATH, 
-driver1 = webdriver.Firefox()
+#driver1 = webdriver.Firefox()
 
 # Obtenemos la URL a través del driver.
-driver1.get(url)
+#driver1.get(url)
 
 # Encontramos el iframe, clickamos sobre él, y nos cambiamos al directorio correspondiente.
-iframeElement = driver1.find_element_by_tag_name("iframe")
-iframeElement.click()
-driver1.switch_to.frame(iframeElement)
+#iframeElement = driver1.find_element_by_tag_name("iframe")
+#iframeElement.click()
+#driver1.switch_to.frame(iframeElement)
 
 # Creamos un objeto soup a través del driver, una vez nos hemos cambiado de directorio.
-soup = BeautifulSoup(driver1.page_source, "html.parser")
+soup = BeautifulSoup(driver.page_source, "html.parser")
 
 # Imprimimos soup.prettify para estudiar la estructura de la URL
 print(soup.prettify)
@@ -63,9 +64,9 @@ print(scripts_tags)
 
 # In[4]:
 
-# Como los números se encuentran en el quinto tag <script>, lo almacenamos en una nueva variable,
-# indexando el quinto valor de scripts_tags.
-data_script = scripts_tags[5]
+# Como los números se encuentran en el cuarto tag <script>, lo almacenamos en una nueva variable,
+# indexando el cuarto valor de scripts_tags.
+data_script = scripts_tags[4]
 print(data_script)
 
 '''
@@ -134,7 +135,8 @@ print(dictio)
 
 # In[16]:
 
-# Cargamos librerías necesarias.
+# Cargamos librerías necesarias, en este caso utilizamos pandas para crear el dataframe con un estilo con el que poder 
+# trabajar.
 import pandas as pd
 
 # Creamos un dataframe con los datos del diccionario.
@@ -145,10 +147,44 @@ matr_turismos = matr_turismos.T
 matr_turismos[0] = pd.to_numeric(matr_turismos[0])
 matr_turismos[1] = pd.to_numeric(matr_turismos[1])
 matr_turismos[2] = pd.to_numeric(matr_turismos[2])
-matr_turismos.columns = [2021, 2020, 2019]
+matr_turismos.columns = ["2021", "2020", "2019"]
+
+print(matr_turismos)
 
 # Almacenamos el resultado en un nuevo archivo CSV.
-matr_turismos.to_csv("matr_turismos.csv")
+#matr_turismos.to_csv("matr_turismos.csv")
+
+pandaaa = pd.DataFrame.from_dict(dictio)
+dataset = pandaaa.T
+dataset[0] = pd.to_numeric(dataset[0])
+dataset[1] = pd.to_numeric(dataset[1])
+dataset[2] = pd.to_numeric(dataset[2])
+
+dataset.columns = ["2021", "2020", "2019"]
+
+# Restamos las columnas para observar la variación que ha habido en las matriculaciones de vehículos realizando la comparativa
+# 2019 - 2020; 2019 - 2021 y 2020 - 2021:
+dataset["Variacion 2019-2020"] = dataset["2019"] - dataset["2020"]
+dataset["Variacion 2019-2021"] = dataset["2019"] - dataset["2021"]
+dataset["Variacion 2020-2021"] = dataset["2020"] - dataset["2021"]
+
+# Se puede observar que la tasa de variación es positiva en practicamente todos los meses, al comparar 2019 (año sin covid)
+# con respecto a 2020 (año covid), excepto en Julio (mes con más apertura en 2020 respecto a meses anteriores en cuanto
+# a medidas y en Diciembre tasa pequeña ya que corresponde a meses de liquidación de vehículos).
+
+#dataset["Variacion"] = dataset.columns[1] - dataset.columns[2]
+print(dataset)
+
+# Elaboramos un gráfico que nos muestra esta variación más visual realizandolo sobre la comparativa 2019-2020.
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+#dataset_graf = dataset[dataset["2019"]]
+#dataset_grafd = dataset[dataset["2020"]]
+#plt.hist(dataset_graf, 12, density=True, facecolor='g', alpha=0.76, stacked=True)
+#plt.hist(dataset_grafd, 12, density=True, facecolor='r', alpha=0.76, stacked=True)
+dataset.plot(x = "2019", y = "2020")
 
 # Quedan aún bastantes cosas, como quitar las comillas que quedan, poner el formato más bonito,
 # o limpiar un poco el código. Diego también nos comentó que miráramos buenas prácticas.
