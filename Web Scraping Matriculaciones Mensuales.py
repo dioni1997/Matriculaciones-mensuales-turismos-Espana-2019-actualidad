@@ -15,7 +15,7 @@ url = "https://www.faconauto.com/matriculaciones-mensuales-turismos/"
 
 # Abrimos un webdriver en el navegador Firefox.
 # NOTA: Es necesario descargar el ejecutable Geckodriver, a través de: https://github.com/mozilla/geckodriver/releases,
-# e incluirlo en el PATH, 
+# e incluirlo en el PATH donde se encuentre el código.
 driver1 = webdriver.Firefox()
 
 # Obtenemos la URL a través del driver.
@@ -29,8 +29,9 @@ driver1.switch_to.frame(iframeElement)
 # Creamos un objeto soup a través del driver, una vez nos hemos cambiado de directorio.
 soup = BeautifulSoup(driver1.page_source, "html.parser")
 
-# Imprimimos soup.prettify para estudiar la estructura de la URL
-print(soup.prettify)
+# Imprimimos soup.prettify para estudiar la estructura de la URL del infograma.
+print("Estructura HTML del infograma:", "\n")
+print(soup.prettify, "\n")
 
 '''
 # En este bloque, se ofrece un modo alternativo de obtener el objeto soup, parseando directamente la URL del iframe (src).
@@ -47,76 +48,92 @@ print("Código de respuesta HTTP:", page)
 soup = BeautifulSoup(page.content, "html.parser")
 
 # Imprimimos soup.prettify para estudiar la estructura de la URL
-# print(soup.prettify)
+print("Estructura HTML del infograma:", "\n")
+print(soup.prettify, "\n")
 
 '''
 
 # In[3]:
 
-
-# Los números deseados se encuentran almacenados en un tag <script>
-# Procedemos a guardar todos estos tags en una nueva variable
+# Los números deseados se encuentran almacenados en un tag <script>.
+# Procedemos a guardar todos estos tags en una nueva variable.
 scripts_tags = soup.find_all("script")
 
 # Imprimimos la nueva variable para comprobar donde están los datos deseados.
+print("Los tags <script> en la página, son los siguientes:", "\n")
 print(scripts_tags)
 
-
 # In[4]:
-
 
 # Como los números se encuentran en el quinto tag <script>, lo almacenamos en una nueva variable,
 # indexando el quinto valor de scripts_tags.
 data_script = scripts_tags[5]
-print(data_script)
+print("El script de destino es el siguiente", "\n")
+print(data_script, "\n")
 
 '''
 # En caso de seleccionar la opción sin Selenium, será necesario acceder al 4o tag script.
 data_script = scripts_tags[4]
+print("El script de destino es el siguiente", "\n")
 print(data_script)
 '''
 
 # In[5]:
 
+# Importamos la libreria re para poder encontrar la ubicación de los datos.
 import re
-import csv
 
+# Transformamos el script almacenado al tipo de variable string.
 data_script = str(data_script)
-
 
 # In[6]:
 
+# Inspeccionando el script, vemos que la segunda aparición de "ENERO" da inicio a nuestros datos.
+# A través de re.finditer, estudiamos
+print("Los índices en los que encontramos el string 'ENERO', son:", "\n")
 for match in re.finditer("ENERO", data_script):
     print (match.start(), match.end())
-
-# VER SI PUEDO PONER TODA LA EXPRESIÓN DE LISTA ["ENERO"... ] con REGEX
+print("\n")
     
-print(data_script[22281:22315])
+# En base al segundo valor, sabemos que podremos encontrar la lista completa del mes
+# con la siguiente indexación:
+print("Datos relativos a ENERO:", "\n")
+print(data_script[22281:22315], "\n")
 
-# Poner diciembre, y donde acabe lo ponemos. 
+# Repetimos el proceso con el mes de diciembre, para saber en qué índice se encuentran 
+# los últimos datos a extraer para nuestro dataset
+print("Los índices en los que encontramos el string 'DICIEMBRE', son:", "\n")
 for match in re.finditer("DICIEMBRE", data_script):
     print (match.start(), match.end())
+print("\n")
 
-print(data_script[22655])
-dic = data_script[22655:]
-dic.find("]")
+# Para saber en qué punto finaliza el dataset, creamos una nueva variable desde el
+# inicio del string "DICIEMBRE" de interés, y buscamos luego la primera aparición
+# del carácter "]", que delimita el final de la lista.
+diciembre = data_script[22655:]
+diciembre.find("]")
 
-data_script[22688]
+# En base a lo anterior, sabemos que la lista acabará en el índice 22655 + 33 = 22688.
+print("Datos relativos a DICIEMBRE:", "\n")
+print(data_script[22653:22689], "\n")
 
+# Por tanto, ya tenemos ambos extremos de la lista a extraer del script.
 data_to_format = data_script[22281:22689]
 
 
 # In[7]:
 
-
-print(data_to_format)
+# Hagamos algunas modificaciones a los valores que queremos eliminar, con el objetivo
+# de únicamente extraer los valores númericos.
 data_to_format = data_to_format.replace("[", "")
 data_to_format = data_to_format.replace("]", "")
 data_to_format = data_to_format.replace('"', "")
-print(data_to_format)
 
+# Separamos la variable por comas, para el paso siguiente.
 data_to_format = data_to_format.split(",")
 
+# A través de un diccionario, le asignamos a cada mes los datos relativos a cada uno de
+# los tres años, aplicando los índices obtenidos tras hacer el split por comas.
 dictio = {}
 dictio[data_to_format[0]] = data_to_format[1], data_to_format[2], data_to_format[3]
 dictio[data_to_format[4]] = data_to_format[5], data_to_format[6], data_to_format[7]
@@ -131,52 +148,56 @@ dictio[data_to_format[36]] = data_to_format[37], data_to_format[38], data_to_for
 dictio[data_to_format[40]] = data_to_format[41], data_to_format[42], data_to_format[43]
 dictio[data_to_format[44]] = data_to_format[45], data_to_format[46], data_to_format[47]
 
-print(dictio)
-
+print("El diccionario final de valores luce así:", "\n")
+print(dictio, "\n")
 
 # In[16]:
 
-# Cargamos librerías necesarias, en este caso utilizamos pandas para crear el dataframe con un estilo con el que poder 
-# trabajar.
+# Cargamos la librería pandas, para poder dar al dataset el estilo deseado.
 import pandas as pd
 
-# Creamos un dataframe con los datos del diccionario.
+# Creamos un dataframe con los datos del diccionario, a través de pd.df.from_dict
 matr_turismos = pd.DataFrame.from_dict(dictio)
 
 # Hacemos las modificaciones necesarias para dar forma a los datos.
-matr_turismos = matr_turismos.T
+matr_turismos = matr_turismos.T  # Trasponemos dataset
 matr_turismos[0] = pd.to_numeric(matr_turismos[0])
 matr_turismos[1] = pd.to_numeric(matr_turismos[1])
 matr_turismos[2] = pd.to_numeric(matr_turismos[2])
-matr_turismos.columns = ["2021", "2020", "2019"]
+matr_turismos.columns = ["2021", "2020", "2019"]  # Damos nombre a las columnas.
 
+# Añadimos columnas con variaciones interanuales por mes.
+matr_turismos["Variación 2019-2020"] = (matr_turismos["2020"] - matr_turismos["2019"])/matr_turismos["2019"]
+matr_turismos["Variación 2020-2021"] = (matr_turismos["2021"] - matr_turismos["2020"])/matr_turismos["2020"]
+
+# Adjuntamos columnas con las evoluciones mensuales de las matriculaciones durante el año.
+matr_turismos["Evolución 2019"] = ((matr_turismos["2019"] - matr_turismos["2019"].shift(+1)))/matr_turismos["2019"].shift(+1)
+matr_turismos["Evolución 2020"] = ((matr_turismos["2020"] - matr_turismos["2020"].shift(+1)))/matr_turismos["2020"].shift(+1)
+matr_turismos["Evolución 2021"] = ((matr_turismos["2021"] - matr_turismos["2020"].shift(+1)))/matr_turismos["2021"].shift(+1)
+
+# Añadimos columnas con las diferencias en evoluciones intermensuales entre los distintos años.
+matr_turismos["Difs evolución 19-20"] = (matr_turismos["Evolución 2020"] - matr_turismos["Evolución 2019"])
+matr_turismos["Difs evolución 20-21"] = (matr_turismos["Evolución 2021"] - matr_turismos["Evolución 2020"])
+
+print("El dataset final es el siguiente:", "\n")
 print(matr_turismos)
-
-# Restamos las columnas para observar la variación que ha habido en las matriculaciones de vehículos realizando la comparativa
-# 2019 - 2020; 2019 - 2021 y 2020 - 2021:
-matr_turismos["Variacion 2019-2020"] = matr_turismos["2019"] - matr_turismos["2020"]
-matr_turismos["Variacion 2019-2021"] = matr_turismos["2019"] - matr_turismos["2021"]
-matr_turismos["Variacion 2020-2021"] = matr_turismos["2020"] - matr_turismos["2021"]
-
-# Se puede observar que la diferencia de los meses es positiva en practicamente todos los meses al comparar el año 2019 (año sin covid)
-# con respecto a 2020 (año covid), excepto en Julio (mes con más apertura en 2020 respecto a meses anteriores en cuanto
-# a medidas y en Diciembre tasa pequeña ya que corresponde a meses de liquidación de vehículos).
-
-# Posteriormente realizamos la tasa de variación interanual del año 2020:
-matr_turismos["Variacion Interanual 2020"] = (((matr_turismos["2020"] - matr_turismos["2019"]) / matr_turismos["2019"])*100)
-
-#dataset["Variacion"] = dataset.columns[1] - dataset.columns[2]
-print(matr_turismos)
-
-# Elaboramos un gráfico que nos muestra esta tasa de variación interanual del año 2020 de forma más visual.
-
-import numpy as np
-import matplotlib.pyplot as plt
-
-matr_turismos["Variacion Interanual 2020"].plot()
 
 # Almacenamos el resultado en un nuevo archivo CSV.
 matr_turismos.to_csv("matr_turismos.csv")
+
+# In[17]:
+
+# EXTRA: En las siguientes líneas de código, generamos los gráficos de análisis que serán empleados en el PDF adjunto.
+
+# Cargamos la librería matplotlib.
+import matplotlib.pyplot as plt
+
+# Generamos el gráfico.
+plt.rcParams["figure.figsize"] = (10,5)
+matr_turismos.plot(y=["Variación 2019-2020", "Difs evolución 19-20", "Variación 2020-2021", "Difs evolución 20-21"], kind="line",
+                   title = "Variaciones interanuales por mes y diferencias de evolución intermensual (%)")
+
+
 
 # Quedan aún bastantes cosas, como quitar las comillas que quedan, poner el formato más bonito,
 # o limpiar un poco el código. Diego también nos comentó que miráramos buenas prácticas.
