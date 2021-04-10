@@ -152,43 +152,31 @@ matr_turismos.columns = ["2021", "2020", "2019"]
 
 print(matr_turismos)
 
-# Almacenamos el resultado en un nuevo archivo CSV.
-#matr_turismos.to_csv("matr_turismos.csv")
-
-pandaaa = pd.DataFrame.from_dict(dictio)
-dataset = pandaaa.T
-dataset[0] = pd.to_numeric(dataset[0])
-dataset[1] = pd.to_numeric(dataset[1])
-dataset[2] = pd.to_numeric(dataset[2])
-
-dataset.columns = ["2021", "2020", "2019"]
-
 # Restamos las columnas para observar la variación que ha habido en las matriculaciones de vehículos realizando la comparativa
 # 2019 - 2020; 2019 - 2021 y 2020 - 2021:
-dataset["Variacion 2019-2020"] = dataset["2019"] - dataset["2020"]
-dataset["Variacion 2019-2021"] = dataset["2019"] - dataset["2021"]
-dataset["Variacion 2020-2021"] = dataset["2020"] - dataset["2021"]
+matr_turismos["Variacion 2019-2020"] = matr_turismos["2019"] - matr_turismos["2020"]
+matr_turismos["Variacion 2019-2021"] = matr_turismos["2019"] - matr_turismos["2021"]
+matr_turismos["Variacion 2020-2021"] = matr_turismos["2020"] - matr_turismos["2021"]
 
 # Se puede observar que la diferencia de los meses es positiva en practicamente todos los meses al comparar el año 2019 (año sin covid)
 # con respecto a 2020 (año covid), excepto en Julio (mes con más apertura en 2020 respecto a meses anteriores en cuanto
 # a medidas y en Diciembre tasa pequeña ya que corresponde a meses de liquidación de vehículos).
 
 # Posteriormente realizamos la tasa de variación interanual del año 2020:
-dataset["Variacion Interanual 2020"] = (((dataset["2020"] - dataset["2019"]) / dataset["2019"])*100)
+matr_turismos["Variacion Interanual 2020"] = (((matr_turismos["2020"] - matr_turismos["2019"]) / matr_turismos["2019"])*100)
 
 #dataset["Variacion"] = dataset.columns[1] - dataset.columns[2]
-print(dataset)
+print(matr_turismos)
 
 # Elaboramos un gráfico que nos muestra esta tasa de variación interanual del año 2020 de forma más visual.
 
 import numpy as np
 import matplotlib.pyplot as plt
 
-#dataset_graf = dataset[dataset["2019"]]
-#dataset_grafd = dataset[dataset["2020"]]
-#plt.hist(dataset_graf, 12, density=True, facecolor='g', alpha=0.76, stacked=True)
-#plt.hist(dataset_grafd, 12, density=True, facecolor='r', alpha=0.76, stacked=True)
-dataset["Variacion Interanual 2020"].plot()
+matr_turismos["Variacion Interanual 2020"].plot()
+
+# Almacenamos el resultado en un nuevo archivo CSV.
+matr_turismos.to_csv("matr_turismos.csv")
 
 # Quedan aún bastantes cosas, como quitar las comillas que quedan, poner el formato más bonito,
 # o limpiar un poco el código. Diego también nos comentó que miráramos buenas prácticas.
