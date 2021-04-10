@@ -13,3 +13,4 @@ al sector de la automoción con respecto a su venta.
 
 NOTA: Ver si en los ejemplos ponían el nombre largo del título al CSV.
       Ver docs buenas prácticas en Campus, aunque recordar que en COVID no podemos considerar valor atípico a variaciones heavys.
+      Habrá que poner también aquí librerías necesarias.
