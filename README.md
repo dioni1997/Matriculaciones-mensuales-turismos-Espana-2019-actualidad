@@ -1,6 +1,6 @@
 # Matriculaciones-turismos-de-Espana.
 
-Componentes:
+Componentes: 
 
 - Carlos Lavado Mahia
 - Dionisio González Jiménez
@@ -11,7 +11,14 @@ Proyecto sobre las matriculaciones de turismos en España en el período de 2019
 observando dichas variaciones a través de un gráfico lineal. Este análisis nos da una visión de como ha afectado esta crisis provocada por el Covid 
 al sector de la automoción con respecto a su venta.
 
-NOTA: Ver si en los ejemplos ponían el nombre largo del título al CSV.
-      Ver docs buenas prácticas en Campus, aunque recordar que en COVID no podemos considerar valor atípico a variaciones heavys.
-      Habrá que poner también aquí librerías necesarias.
-      Los prints del código hacerlos bonitos con .format()
+DOI de los datos publicados en Zenodo: 10.5281 / zenodo.4679639 <br />
+Acceso: https://zenodo.org/record/4679639#.YHM0QK8zbIU <br />
+
+Para poder ejecutar el código presente en este repositorio, es necesaria la instalación de las siguientes librerías en Python: <br />
+pip install selenium <br />
+pip install requests(*) <br />
+pip install beautifulsoup4 <br />
+pip install pandas <br />
+pip install maplotlib <br />
+
+
