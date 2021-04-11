@@ -114,6 +114,7 @@ data_to_format = data_script[22281:22689]
 data_to_format = data_to_format.replace("[", "")
 data_to_format = data_to_format.replace("]", "")
 data_to_format = data_to_format.replace('"', "")
+data_to_format = data_to_format.replace(".", "")
 
 # Separamos la variable por comas, para el paso siguiente.
 data_to_format = data_to_format.split(",")
