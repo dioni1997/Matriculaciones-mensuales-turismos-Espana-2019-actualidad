@@ -15,6 +15,7 @@ DOI de los datos publicados en Zenodo: 10.5281 / zenodo.4679639 <br />
 Acceso: https://zenodo.org/record/4679639#.YHM0QK8zbIU <br />
 
 **Para poder ejecutar el código, es necesaria la instalación de las siguientes librerías en Python:** <br />
+
 pip install selenium <br />
 pip install requests(*) <br />
 pip install beautifulsoup4 <br />
