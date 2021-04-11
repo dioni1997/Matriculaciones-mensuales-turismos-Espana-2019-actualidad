@@ -78,7 +78,7 @@ import re
 data_script = str(data_script)
 
 # Inspeccionando el script, vemos que la segunda aparición de "ENERO" da inicio a nuestros datos.
-# A través de re.finditer, estudiamos
+# A través de re.finditer, estudiamos donde se encuentran los primeros índices del dataset.
 print("Los índices en los que encontramos el string 'ENERO', son:", "\n")
 for match in re.finditer("ENERO", data_script):
     print (match.start(), match.end())
@@ -90,7 +90,7 @@ print("Datos relativos a ENERO:", "\n")
 print(data_script[22281:22315], "\n")
 
 # Repetimos el proceso con el mes de diciembre, para saber en qué índice se encuentran 
-# los últimos datos a extraer para nuestro dataset
+# los últimos datos a extraer para nuestro dataset.
 print("Los índices en los que encontramos el string 'DICIEMBRE', son:", "\n")
 for match in re.finditer("DICIEMBRE", data_script):
     print (match.start(), match.end())
