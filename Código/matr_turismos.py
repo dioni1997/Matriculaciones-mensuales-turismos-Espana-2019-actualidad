@@ -178,7 +178,13 @@ matr_turismos.to_csv("matr_turismos.csv")
 # Cargamos la librería matplotlib.
 import matplotlib.pyplot as plt
 
-# Generamos el gráfico.
+# Generamos el gráfico de comparación 2019 vs 2020.
 plt.rcParams["figure.figsize"] = (10,5)
 matr_turismos.plot(y=["Variación 2019-2020", "Difs evolución 19-20"], kind="line",
-                   title = "Variaciones interanuales por mes y diferencias de evolución intermensual (%)")
+                   title = "Variaciones interanuales por mes y diferencias de evolución intermensual 19-20 (%)")
+
+# Si bien los datos son aún escasos, representamos también 2019 vs 2021.
+# De este modo, potenciamos la reutilización del código en los próximos meses.
+plt.rcParams["figure.figsize"] = (10,5)
+matr_turismos.plot(y=["Variación 2019-2021", "Difs evolución 19-21"], kind="line",
+                   title = "Variaciones interanuales por mes y diferencias de evolución intermensual 19-21 (%)")
