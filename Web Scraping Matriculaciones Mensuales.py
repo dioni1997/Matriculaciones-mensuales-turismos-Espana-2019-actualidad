@@ -163,7 +163,7 @@ matr_turismos["Evolución 2021"] = ((matr_turismos["2021"] - matr_turismos["2021
 matr_turismos["Difs evolución 19-20"] = (matr_turismos["Evolución 2020"] - matr_turismos["Evolución 2019"])
 matr_turismos["Difs evolución 19-21"] = (matr_turismos["Evolución 2021"] - matr_turismos["Evolución 2019"])
 
-print("El dataset final es el siguiente:", "\n")
+print("\n", "El dataset final es el siguiente:", "\n")
 print(matr_turismos)
 
 # Almacenamos el resultado en un nuevo archivo CSV.
