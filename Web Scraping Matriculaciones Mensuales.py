@@ -163,6 +163,9 @@ matr_turismos["Evolución 2021"] = ((matr_turismos["2021"] - matr_turismos["2021
 matr_turismos["Difs evolución 19-20"] = (matr_turismos["Evolución 2020"] - matr_turismos["Evolución 2019"])
 matr_turismos["Difs evolución 19-21"] = (matr_turismos["Evolución 2021"] - matr_turismos["Evolución 2019"])
 
+# Redondeamos todas las columnas del dataset a los dos decimales.
+matr_turismos = matr_turismos.round(2)
+
 print("El dataset final es el siguiente:", "\n")
 print(matr_turismos)
 
